@@ -9,9 +9,8 @@ import java.util.Set;
 public class TRAII_23_X1_hilkolli implements TRAII_23_X1 {
     /**
      * ITSEARVIOINTI TÃ„HÃ„N:
-     *
-     *
-     *
+     * Aikavaativuus O(n), jossa n on puun alkioiden lukumäärä. Alkiot käydään yksitellen jokainen läpi. Tulokseen lisätään lehtisolmut.
+     * Ratkaisu on selkeä ja toimiva
      **/
     /**
      * Puun lehtisolmut.
@@ -22,12 +21,25 @@ public class TRAII_23_X1_hilkolli implements TRAII_23_X1 {
      */
      @Override
     public <E> Set<BTreeNode<E>> lehtiSolmut(BTree<E> T) {
-        Set<BTreeNode<E>> lehdet = new HashSet<>();
-
-        // TODO
-         // saa ja kannattaa tehdÃ¤ joku toinenkin metodi avuksi
+         Set<BTreeNode<E>> lehdet = new HashSet<>();
+         if (T.getRoot() != null) {
+             BTreeNode<E> root = T.getRoot();
+             lisaaLehtisolmut(root, lehdet);
+         }
 
         return lehdet;
+    }
+
+    private <E> void lisaaLehtisolmut(BTreeNode<E> root, Set<BTreeNode<E>> lehdet) {
+         if (root.getLeftChild() != null) {
+             lisaaLehtisolmut(root.getLeftChild(), lehdet);
+         }
+         if (root.getRightChild() != null) {
+             lisaaLehtisolmut(root.getRightChild(), lehdet);
+         }
+         if (root.getLeftChild() == null && root.getRightChild() == null) {
+             lehdet.add(root);
+         }
     }
 
 }
