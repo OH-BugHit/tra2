@@ -6,8 +6,23 @@ public class TRAII_23_X2_hilkolli implements TRAII_23_X2 {
     Random rnd = new Random();
     /**
      * ITSEARVIOINTI TĆ„HĆ„N:
+     * Yksittäisenä operaationa contains on hyvin nopea ja vaati huomattavan määrän toistoja. Toistan contains operaation 200 000 kertaa ja otan keskimääräisen suoritusajan talteen näistä.
+     * Jokainen operaatio tehdään eri avaimella, jotta avaimen vaikutuksestakin saadaan keskiarvo.
+     * Käytän tässä vaiheessa keskiarvoa, sillä mediaanin laskemiseen menee huomattavasti pidempi aika ja täysin poikkeukselliset arvot jätetään jokatapauksessa huomiotta seuraavassa vaiheessa.
+     *
+     * Toistan sitten tämän 200 000 keskiarvoajon 100 kertaa ja otan niistä sadasta ajosta mediaanin.
+     * Mediaanin käyttö tässä poistaa mahdolliset hyvin poikkeuksellisen keskiarvon saaneet ajot.
      *
      *
+     * Testatessa tietokone (kannettava) on liitetty verkkovirtaan ja virranhallinta-asetukset on säädetty suorituskykyä ajatellen. Muut ohjelmat on sammutettu.
+     * Näyttöjä käytössä vain yksi.
+     * "Käynnissä" on intelliJ:n lisäksi vain windowsin tehtävienhallinta, josta tarkkailin kellotaajuutta testauksen aikana. Kellotaajuus säilyi kohtalaisen tasaisena 4.2-4.4GHz välillä.
+     *
+     * Testit ajettu i7-11800H prosessorilla @ 4.2-4.4GHz.
+     * Testi "TreeMap n = 1048576" kesti ~640ms. Jos testi kestää liian kauan mahdollisesti hitaammalla koneella, säädä operaatoiden toistoa (int operaatiot) tai ajettavien testien lukumäärää (int testit) vähemmäksi.
+     *
+     * Testattaessa nähdään selvästi HashMapin contains-operaation vakioaikaisuus. Testiajon sisällä kaikki testit ovat max 1ns päässä toisistaan. Yleensä kuitenkin kaikissa testeissä samat (1ns tai 2ns)
+     * Testattaessa nähdään selvästi TreeMapin contains-operaation aikavaativuuden logaritmisyys. Yksittäisen contains operaation kestona saadaan 1ns ja ajon n = 1048576 kesto on 32ns. Muutkin arvot sattuvat hyvin tarkasti logaritmisesti.
      **/
     /**
      * Mittaa annetun kuvauksen containsKey -operaation aikavaativuuden nanosekunteina.
@@ -20,36 +35,25 @@ public class TRAII_23_X2_hilkolli implements TRAII_23_X2 {
 
     @Override
     public long containsKeyNopeus(Map<Double, Double> M) {
-        double key = rnd.nextDouble();
-        int testit = 25000;
-        long start = System.nanoTime();
-        for (int i = 0; i < testit; i++) {
-            M.containsKey(key);
-        }
-        long end = System.nanoTime();
-        long testi1 = (end-start)/testit;
+        int operaatiot = 200000; // operaation toistomäärä yhdellä testikierroksella
+        int testit = 100;
 
-        key = rnd.nextDouble();
-        start = System.nanoTime();
-        for (int i = 0; i < testit; i++) {
-            M.containsKey(key);
-        }
-        end = System.nanoTime();
-        long testi2 = (end-start)/testit;
+        double key;
+        long start;
+        long end;
+        long[] results = new long[testit]; // testien lukumäärä yhdellä testimetodin ajolla
 
-        key = rnd.nextDouble();
-        start = System.nanoTime();
-        for (int i = 0; i < testit; i++) {
-            M.containsKey(key);
+        for (int i = 0; i < results.length; i++) {
+            key = rnd.nextDouble();
+            start = System.nanoTime();
+            for (int j = 0; j < operaatiot; j++) {
+                M.containsKey(key);
+            }
+            end = System.nanoTime();
+            results[i] =  (end - start) / operaatiot;
         }
-        end = System.nanoTime();
-        long testi3 = (end-start)/testit;
 
-        if (testi1 >= testi2 && testi1 <= testi3) {
-            return testi1;
-        } else if (testi2 > testi1 && testi2 < testi3) {
-            return testi2;
-        }
-        return testi3;
+        Arrays.sort(results); // järjestellään mediaanin ottamista varten. O(nlog(n))
+        return results[results.length/2];
     }
 }

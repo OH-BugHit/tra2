@@ -47,13 +47,13 @@ public class TRAII_23_X2_testi {
      */
     static void testaaX2(int n, Random rnd, int print) {
         int k = 1;
-        Map<Double, Double> M = new HashMap<>();
-        //Map<Double, Double> M = new TreeMap<>();
+        //Map<Double, Double> M = new HashMap<>();
+        Map<Double, Double> M = new TreeMap<>();
         while (M.size() < n) {
             while (M.size() < k)
                 M.put(rnd.nextDouble(), rnd.nextDouble());
             testaaX2(M, print);
-            k *= 10;
+            k *= 2; //TÄHÄN TULEE KERROIN
         }
     }
 
