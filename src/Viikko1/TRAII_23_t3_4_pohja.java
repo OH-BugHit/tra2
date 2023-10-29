@@ -125,7 +125,7 @@ public class TRAII_23_t3_4_pohja {
         int esiintymienLukumaara = 0;
         E tulos = null;
         for (E obj : C) {
-            if (!objJaSetti.containsKey(obj)) { //returns true if and only if this map contains a mapping for a key k such that Objects.equals(key, k). Eli vertailu tapahtuu .equals() -operaatiolla
+            if (!objJaSetti.containsKey(obj)) { // returns true if and only if this map contains a mapping for a key k such that Objects.equals(key, k). Eli vertailu tapahtuu .equals() -operaatiolla
                 objJaSetti.put(obj, 1);
                 if (esiintymienLukumaara == 0) {
                     esiintymienLukumaara = 1;
