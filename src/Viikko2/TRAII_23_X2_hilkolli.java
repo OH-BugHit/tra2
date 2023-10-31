@@ -21,8 +21,8 @@ public class TRAII_23_X2_hilkolli implements TRAII_23_X2 {
      * Testit ajettu i7-11800H prosessorilla @ 4.2-4.4GHz.
      * Testi "TreeMap n = 1048576" kesti ~640ms. Jos testi kestää liian kauan mahdollisesti hitaammalla koneella, säädä operaatoiden toistoa (int operaatiot) tai ajettavien testien lukumäärää (int testit) vähemmäksi.
      *
-     * Testattaessa nähdään selvästi HashMapin contains-operaation vakioaikaisuus. Testiajon sisällä kaikki testit ovat max 1ns päässä toisistaan. Yleensä kuitenkin kaikissa testeissä samat (1ns tai 2ns)
-     * Testattaessa nähdään selvästi TreeMapin contains-operaation aikavaativuuden logaritmisyys. Yksittäisen contains operaation kestona saadaan 1ns ja ajon n = 1048576 kesto on 32ns. Muutkin arvot sattuvat hyvin tarkasti logaritmisesti.
+     * Testattaessa nähdään selvästi HashMapin contains-operaation vakioaikaisuus. Testiajon sisällä kaikki testit ovat max 1ns päässä toisistaan tämä ero tullee mahdollisesti lähinnä pyöristyksessä lähimpään nanosekuntiin. Yleensä kuitenkin kaikissa testeissä samat (1ns tai 2ns)
+     * Testattaessa nähdään selvästi TreeMapin contains-operaation aikavaativuuden logaritmisyys. Yhden kokoisen syötteen contains operaation kestona saadaan 1ns ja ajon n = 1048576 kesto on 32ns. Muutkin arvot sattuvat hyvin tarkasti logaritmisesti.
      **/
     /**
      * Mittaa annetun kuvauksen containsKey -operaation aikavaativuuden nanosekunteina.

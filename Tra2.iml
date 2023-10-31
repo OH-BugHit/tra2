@@ -10,10 +10,10 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../TRA1/tra2017.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../Suoritetut kurssit/TRA1/tra2017.jar!/" />
         </CLASSES>
         <JAVADOC>
-          <root url="jar://$MODULE_DIR$/../../TRA1/tra2017.jar!/javadoc" />
+          <root url="jar://$MODULE_DIR$/../../../Suoritetut kurssit/TRA1/tra2017.jar!/javadoc" />
         </JAVADOC>
         <SOURCES />
       </library>
