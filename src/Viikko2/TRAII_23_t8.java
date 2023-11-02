@@ -5,8 +5,8 @@ import java.util.*;
 /**
  *
  * ARVIO!
- * Kertaluokka on O(1)
- * Ainakin jos osaan käyttää tota subsettiä oikein..
+ * Kertaluokka on O(n)
+ * Ainakin jos osaan käyttää tota subsettiä oikein.. Syötteen kaksinkertaistuessa, käytetty aika kaksinkertaistuu
  */
 public class TRAII_23_t8 {
     static Random rnd = new Random();
