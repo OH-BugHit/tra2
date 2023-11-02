@@ -6,7 +6,7 @@ import java.util.*;
  *
  * ARVIO!
  * Kertaluokka on O(n)
- * Muistin tasojen muutokset näkyvät pienemmillä syötteillä erittäin selvästi. Muuten kasvaa n kaksinkertaiseksi kun syöte kasvaa 2x
+ * n kasvaa noin kaksinkertaiseksi kun syöte kasvaa 2x
  */
 public class TRAII_23_t7 {
     static Random rnd = new Random();
@@ -105,8 +105,13 @@ public class TRAII_23_t7 {
 
 
     private static long containsKeyNopeus(PriorityQueue<Double> M) {
-        int operaatiot = 3; // operaation toistomäärä yhdellä testikierroksella
+        int operaatiot = 5; // operaation toistomäärä yhdellä testikierroksella
         int testit = 10; // testien lukumäärä yhdellä testimetodin ajolla
+
+        if (M.size() <= 512) { // Parannetaan tarkkuutta kun syöte on pieni!
+            operaatiot = 300;
+            testit = 50;
+        }
 
         double key; //jos haluttaisiin random key, nyt testataan pahinta mahdollista (eli ei löydy) kertaluokan selvittämiseksi
         long start;
