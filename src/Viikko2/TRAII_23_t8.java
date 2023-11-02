@@ -7,6 +7,7 @@ import java.util.*;
  * ARVIO!
  * Kertaluokka on O(n)
  * Ainakin jos osaan käyttää tota subsettiä oikein.. Syötteen kaksinkertaistuessa, käytetty aika kaksinkertaistuu
+ * Tuloksessa näkyy selvästi välimuistin vaikutus
  */
 public class TRAII_23_t8 {
     static Random rnd = new Random();
@@ -47,8 +48,9 @@ public class TRAII_23_t8 {
      * @param print tulostusten mÃ¤Ã¤rÃ¤
      */
     static void testaaT8(int n, Random rnd, int print) {
-        int k = 131072;
+        int k = 1;
         TreeSet<Double> M = new TreeSet<>();
+        M.add(0.0); //aloitus
         while (M.size() < n) {
             while (M.size() < k)
                 M.add(rnd.nextDouble());
@@ -108,8 +110,14 @@ public class TRAII_23_t8 {
         int operaatiot = 5; // operaation toistomäärä yhdellä testikierroksella
         int testit = 10; // testien lukumäärä yhdellä testimetodin ajolla
 
-        double key;
-        double startKey = 0.0;
+        if (M.size() <= 8192) { // Parannetaan tarkkuutta kun syöte on pieni!
+            operaatiot = 300;
+            testit = 50;
+        }
+        double key = -1.0;
+        M.add(key);
+
+        double startKey = 0.0; //aloitus
         long start;
         long end;
         long[] results = new long[testit];
