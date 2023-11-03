@@ -6,7 +6,7 @@ import java.util.*;
  *
  * ARVIO!
  * Kertaluokka on O(n)
- * Ainakin jos osaan käyttää tota subsettiä oikein.. Syötteen kaksinkertaistuessa, käytetty aika kaksinkertaistuu
+ * Ainakin jos osaan käyttää tota subsettiä oikein.. Syötteen kaksinkertaistuessa, käytetty aika kaksinkertaistuu.
  * Tuloksessa näkyy selvästi välimuistin vaikutus
  */
 public class TRAII_23_t8 {
@@ -107,8 +107,8 @@ public class TRAII_23_t8 {
 
 
     private static long subSetNopeus(TreeSet<Double> M) {
-        int operaatiot = 5; // operaation toistomäärä yhdellä testikierroksella
-        int testit = 10; // testien lukumäärä yhdellä testimetodin ajolla
+        int operaatiot = 50; // operaation toistomäärä yhdellä testikierroksella
+        int testit = 100; // testien lukumäärä yhdellä testimetodin ajolla
 
         if (M.size() <= 8192) { // Parannetaan tarkkuutta kun syöte on pieni!
             operaatiot = 300;
@@ -126,7 +126,7 @@ public class TRAII_23_t8 {
             key = M.size()-1.0;
             start = System.nanoTime();
             for (int j = 0; j < operaatiot; j++) {
-                TreeSet<Double> a = new TreeSet<>(M.subSet(startKey,key));
+                /*TreeSet<Double> a = new TreeSet<>(*/M.subSet(startKey,key);//); // jos ei muodosteta uutta.
             }
             end = System.nanoTime();
             results[i] =  (end - start) / operaatiot;
