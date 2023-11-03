@@ -68,8 +68,6 @@ public class TRAII_23_t11_12_pohja {
         varita(G, DiGraph.WHITE);
         Set<Vertex> s = new HashSet<>();
         if (solmu != null) {
-            s.add(solmu);
-            solmu.setColor(DiGraph.GRAY);
             kayLapi(solmu, s);
         }
         return s;
