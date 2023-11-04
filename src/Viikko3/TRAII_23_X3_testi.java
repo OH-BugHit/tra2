@@ -16,13 +16,13 @@ public class TRAII_23_X3_testi {
         if (args.length > 0)
             N1 = Integer.parseInt(args[0]);
 
-        int N2 = 1000000;
+        int N2 = 10000000;
         if (args.length > 0)
             N2 = Integer.parseInt(args[1]);
 
-        TRAII_23_X3 testattava = new TRAII_23_X3_pohja(); // TODO: oma tunnus tÃ¤hÃ¤n
+        TRAII_23_X3 testattava = new TRAII_23_X3_hilkolli();
 
-        // testataan parilla ei jonototeutuksella
+        // testataan parilla eRi jonototeutuksella
         testaa(testattava, new ArrayDeque<>(), N1, N2);
 
         testaa(testattava, new LinkedList<>(), N1, N2);
