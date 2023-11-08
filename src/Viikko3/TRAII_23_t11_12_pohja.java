@@ -49,11 +49,6 @@ public class TRAII_23_t11_12_pohja {
                     break;
             }
         }
-
-
-
-
-
     } // main()
 
 
@@ -139,11 +134,7 @@ public class TRAII_23_t11_12_pohja {
                 dfsRekursio(v);
     }
 
-
-
     // esimerkkejÃ¤
-
-
     /**
      * Syvyyssuuntainen lÃ¤pikÃ¤ynti solmusta node alkaen
      *
