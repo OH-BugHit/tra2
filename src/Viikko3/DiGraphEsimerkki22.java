@@ -1,5 +1,6 @@
 package Viikko3;
 
+import Apuluokat.GraphMaker;
 import fi.uef.cs.tra.*;
 
 import java.util.HashMap;

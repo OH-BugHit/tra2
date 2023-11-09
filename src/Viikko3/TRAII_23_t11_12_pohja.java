@@ -1,8 +1,8 @@
 package Viikko3;
 
+import Apuluokat.GraphMaker;
 import fi.uef.cs.tra.AbstractGraph;
 import fi.uef.cs.tra.DiGraph;
-import fi.uef.cs.tra.Edge;
 import fi.uef.cs.tra.Vertex;
 
 import java.util.*;

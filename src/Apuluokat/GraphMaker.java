@@ -1,4 +1,4 @@
-package Viikko3;
+package Apuluokat;
 
 import fi.uef.cs.tra.*;
 
