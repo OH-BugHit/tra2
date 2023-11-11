@@ -54,6 +54,7 @@ public class TRAII_23_t11_12_pohja {
 
     /**
      * Solmun seuraajien joukko.
+     * O(n+e)
      * Solmun seuraajien joukko ovat ne solmut joihin on polku annetusta solmusta.
      * @param G tarkasteltava verkko (ei vÃ¤lttÃ¤mÃ¤ttÃ¤ tarvita)
      * @param solmu aloitussolmu
@@ -62,9 +63,7 @@ public class TRAII_23_t11_12_pohja {
     static Set<Vertex> seuraajienJoukko(DiGraph G, Vertex solmu) {
         varita(G, DiGraph.WHITE);
         Set<Vertex> s = new HashSet<>();
-        if (solmu != null) {
-            kayLapi(solmu, s);
-        }
+        kayLapi(solmu, s);
         return s;
     }
 
@@ -81,6 +80,7 @@ public class TRAII_23_t11_12_pohja {
 
     /**
      * Joku polku solmusta alku solmuun loppu.
+     * O(n+e)
      * Versio joka rakentaa polkua rekursiossa edetessÃ¤ (ja purkaa jollei maalia lÃ¶ydy)
      * @param G tarkasteltava verkko (tarvitaan pohjavÃ¤ritykseen)
      * @param alku polun alkusolmu

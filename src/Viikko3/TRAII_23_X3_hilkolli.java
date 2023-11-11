@@ -127,7 +127,6 @@ public class TRAII_23_X3_hilkolli implements TRAII_23_X3 {
                     for (int operaatiot = 0; operaatiot < alkioMaara; operaatiot++) { // n alkion verran lisätään alkio ja poistetaan.
                         x = Q.poll();
                         Q.offer(x);
-
                     }
                     for (int operaatiot = 0; operaatiot < alkioMaara; operaatiot++) {
                         Q.poll();
