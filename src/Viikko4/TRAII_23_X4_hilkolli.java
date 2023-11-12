@@ -15,15 +15,15 @@ public class TRAII_23_X4_hilkolli implements TRAII_23_X4 {
      * Juurisolmutestin aikavaativuus O(v+e) jossa v = solmut ja e = kaaret
      * Puiden määrän aikavaativuus O(v+e) jossa v = solmut ja e = kaaret
      *
-     * Ratkaisu on yksinkertainen ja toimiva. Puiden lukumäärän ratkaisussa käytetään hyödyksi alun kaarten läpikäyntiä.
+     * Ratkaisu on yksinkertainen ja toimiva.
+     * Mahdollisissa juurisolmuissa rajasin pois kaikki solmut joihin tulee kaaria.
+     * Puiden lukumäärässä hain ongelmaan ratkaisua siitä, että puun solmulla voi olla vain yksi tulokaari. Ratkaisussa käytetään hyödyksi alun kaarten läpikäyntiä.
      * Puiden määrän ratkaisussa saadaan heti kiinni solmut joihin tulee kaksi kaarta ja kyseisen potentiaalisen juurisolmun haku lopetetaan heti.
-     * Tässä käytetään hyväkseen try-catch rakennetta jolloin rekursiosta karataan heittämällä poikkeus.
-     * Kysyinkin eräällä luennolla mitä mieltä olet tavasta ja jäin siihen vaikutelmaan, että se on hyväksyttävää (joskin ei ehkä kaunista).
      * Ratkaisua ei voida mielestäni tehostaa.
      * Kaikki kaaret ja solmut käydään läpi aina vähintään kertaalleen mahdollisia juurisolmuja etsiessä.
      *
      **/
-    
+
     /** Palauttaa joukkona kaikki ne suunnatun verkon solmut joihin ei johda yhtÃ¤Ã¤n kaarta.
      *
      * @param G syÃ¶teverkko
@@ -40,7 +40,7 @@ public class TRAII_23_X4_hilkolli implements TRAII_23_X4 {
      * Lisää annettuun solmujen joukkoon potentiaaliset juurisolmut
      * @param G Tutkittava verkko
      * @param vSet Setti johon juurisolmut lisätään
-     * @param kayttotapa Jos == 1 niin värjätään valkoisiksi mahdolliset juurisolmut, punaisiksi solmut joihin tulee enemmän kuin yksi kaari ja muut solmut harmaiksi.
+     * @param kayttotapa Jos == 1 niin värjätään valkoisiksi mahdolliset juurisolmut, punaisiksi solmut joihin tulee enemmän kuin yksi kaari sekä tällaista solmua edeltävä solmu myös. Muut harmaiksi.
      */
     private static void mahdollisetJuurisolmut(DiGraph G, Set<Vertex> vSet, int kayttotapa) {
         for (Vertex v: G.vertices()) { // O(v) käydään kaikki solmut läpi
@@ -50,7 +50,14 @@ public class TRAII_23_X4_hilkolli implements TRAII_23_X4 {
 
         for (Edge e: G.edges()) { // O(e) käydään kaikki kaaret läpi
             Vertex v = e.getEndPoint(); //O(1)
-            if (kayttotapa == 1) v.setColor(v.getColor() == DiGraph.WHITE ? DiGraph.GRAY : DiGraph.RED); // Maalataan ensimmäisellä kerralla harmaaksi. Jos solmu löytyy uudelleen (ei ole valkoinen), tulee siihen vähintään kaksi kaarta eikä se voi olla puussa (lapsella tasan yksi vanhempi) tällöin maalataan punaiseksi.
+            if (kayttotapa == 1) {
+                if (v.getColor() == DiGraph.WHITE) {
+                    v.setColor(DiGraph.GRAY); // Maalataan solmu ensimmäisellä kerralla tavatessa harmaaksi.
+                } else {
+                    v.setColor(DiGraph.RED); // Jos solmu löytyy uudelleen (ei ole valkoinen), tulee siihen vähintään kaksi kaarta eikä se voi olla puussa (lapsella tasan yksi vanhempi) tällöin maalataan punaiseksi.
+                    e.getStartPoint().setColor(DiGraph.RED); // Maalataan myös tämä kaaren lähtösolmu niin saadaan mahdollisesti tehostettua seuraavaa vaihetta.
+                };
+            }
             vSet.remove(v); // Poistetaan potentiaalisista puunjuurista kaikki johon tulee kaaria O(1)
         }
     }
@@ -68,26 +75,28 @@ public class TRAII_23_X4_hilkolli implements TRAII_23_X4 {
         mahdollisetJuurisolmut(G, potentiaalisetPuunJuuret,1);
 
         for (Vertex v: potentiaalisetPuunJuuret) { // O(v) käydään läpi max v määrä solmuja ja max O(e) määrä kaaria (vain kehättömät mukana ). Täten O(v+e)
-            try {
-                tarkistaPuu(v);
+            if (!tarkistaPuu(v)) { // Jos ei löydy punaista solmua niin oli kelpo puu.
                 tulos++;
-            } catch (Exception ignored) { //Hypättiin tulos++ yli, mikäli löytyi punainen solmu. Siirrytään seuraavaan potentiaaliseen puunjuureen O(1)
             }
         }
         return tulos;
     }
 
     /**
+     *
      * Puun rekursiivistä syvyyssuuntaista läpikäyntiä, jossa tarkistetaan löytyykö punaista solmua.
      * @param v Solmu josta hakua suoritetaan
-     * @throws Exception Jos löytyy, niin heittää poikkeuksen
+     * @return palauttaa totuusarvon, löytyikö punaista solmua
      */
-    private void tarkistaPuu(Vertex v) throws Exception {
+    private boolean tarkistaPuu(Vertex v) {
         if (v.getColor() == DiGraph.RED) { // Jos löytyy solmu johon tulee (vähintään) kaksi sisääntulevaa kaarta niin keskeytetään potentiaalisen puunjuuren läpikäynti.
-            throw new Exception("Ei ole puu");
+            return true;
         }
         for (Vertex v2: v.neighbors()) { // Muussa tapauksessa jatketaan rekursiivisesti puun läpikäyntiä jossa siis tarkistetaan löytyykö solmua jolla on kaksi sisääntulevaa kaarta.
-            tarkistaPuu(v2);
+            if (tarkistaPuu(v2)) {
+                return true;
+            };
         }
+        return false;
     }
 }
