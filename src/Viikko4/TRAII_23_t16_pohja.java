@@ -5,7 +5,7 @@ import fi.uef.cs.tra.AbstractGraph;
 import fi.uef.cs.tra.Graph;
 import fi.uef.cs.tra.Vertex;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -46,9 +46,17 @@ public class TRAII_23_t16_pohja {
 
     static List<Vertex> jokuKeha(Graph G) {
         varita(G, Graph.WHITE);
+        List<Vertex> tulos = new ArrayList<>();
 
-        // TODO
-        // vihje: hae kehÃ¤ syvyyssuuntaisella haulla
+        for (Vertex v:G.vertices()) {
+            v.setColor(Graph.GRAY);
+            tulos.add(v);
+            if (dfsColor(v, Graph.GREY, tulos)) {
+                return tulos;
+            }
+            tulos.remove(tulos.size()-1);
+            v.setColor(Graph.WHITE);
+        }
 
         return null;
     }
@@ -57,12 +65,20 @@ public class TRAII_23_t16_pohja {
 
 
     // syvyyssuuntainen lÃ¤pikynti vÃ¤rittÃ¤en vÃ¤rillÃ¤ c
-    static void dfsColor(Vertex v, int color) {
-        v.setColor(color);
-
-        for (Vertex w : v.neighbors())
-            if (w.getColor() != color)
-                dfsColor(w, color);
+    static boolean dfsColor(Vertex v, int color, List<Vertex> tulos) {
+        for (Vertex w : v.neighbors()) {
+            tulos.add(w);
+            if (w.getColor() == color) {
+                return true;//valmis
+            }
+            w.setColor(color);
+            if (dfsColor(w, color, tulos)) {
+                return true;
+            }
+        }
+        v.setColor(Graph.WHITE);
+        tulos.remove(tulos.size()-1);
+        return false;
     }
 
     // verkko annetun vÃ¤riseksi
