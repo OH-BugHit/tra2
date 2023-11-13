@@ -2,8 +2,10 @@ package Viikko4;// TRAII_23_t14.java SJ
 
 import Apuluokat.GraphMaker;
 import fi.uef.cs.tra.DiGraph;
+import fi.uef.cs.tra.Edge;
 import fi.uef.cs.tra.Vertex;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,13 +50,29 @@ public class TRAII_23_t14_pohja {
       * @return the set of companies under quorum of v. Including v.
       **/
     static Set<Vertex> quorum(DiGraph g, Vertex v, float limit) {
+        Set<Vertex> tulos = new HashSet<>(); // tulos
 
-
-        Set<Vertex> tulos = new HashSet<>();
-
-        // TODO
-
+        HashMap<Vertex, Float> tilanne = new HashMap<>(); // Käytetään apuna kuvausta. Tänne tallennetaan omistuksen painokertymä.
+        for (Edge e: v.edges()) {
+            selevitaHomma(e,v,tilanne,limit,tulos); // Käydään läpi lähtevät kaaret
+        }
         return tulos;
+    }
+
+    private static void selevitaHomma(Edge e, Vertex v, HashMap<Vertex, Float> tilanne, float limit, Set<Vertex> tulos) {
+        float paino = e.getWeight(); // asetetaan muuttujaan paino, kaaren paino
+        if (tilanne.containsKey(e.getEndPoint())) {
+            paino += tilanne.get(e.getEndPoint()); // Jos solmuun on jo menty muuta kautta, lisätään muuttujaan paino omistuksen painokertymä
+        }
+        tilanne.put(e.getEndPoint(),paino); // Päivitetään painokertymää
+        if (paino > limit) { // Mikäli omistuspaino on suurempi kuin raja
+            tulos.add(e.getEndPoint()); // Lisätään omistuksiin
+            for (Edge e1 : e.getEndPoint().edges()) { // Käydään läpi uuden omistuksen omistukset
+                if (!tulos.contains(e1.getEndPoint()) && v != e1.getEndPoint()) { // paisi takaisinpäin
+                    selevitaHomma(e1,v,tilanne,limit,tulos); // Etsitään rekursiivisesti omistuksia syvempää
+                }
+            }
+        }
     }
 
 
@@ -74,6 +92,7 @@ public class TRAII_23_t14_pohja {
         va[0].addEdge(va[1], 0.3F);
         va[0].addEdge(va[2], 0.7F);
         va[0].addEdge(va[4], 0.2F);
+        va[1].addEdge(va[0],0.9F);
         va[1].addEdge(va[3], 0.2F);
         va[2].addEdge(va[1], 0.3F);
         va[2].addEdge(va[3], 0.6F);
@@ -84,8 +103,5 @@ public class TRAII_23_t14_pohja {
         va[6].addEdge(va[5], 0.2F);
 
         return g;
-
-
     }
-
 }
