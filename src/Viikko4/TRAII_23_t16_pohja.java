@@ -6,6 +6,7 @@ import fi.uef.cs.tra.Graph;
 import fi.uef.cs.tra.Vertex;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -40,44 +41,47 @@ public class TRAII_23_t16_pohja {
         System.out.println("\nLisÃ¤tÃ¤Ã¤n kehÃ¤: ");
         GraphMaker.addRandomCycle(graph, 3, false);
         keha = jokuKeha(graph);
+        System.out.println(GraphMaker.toString(graph, 0));
         System.out.println("KehÃ¤: " + keha);
 
     }
 
     static List<Vertex> jokuKeha(Graph G) {
-        varita(G, Graph.WHITE);
-        List<Vertex> tulos = new ArrayList<>();
+        varita(G, Graph.WHITE); // Väritetään verkko valkoiseksi
+        List<Vertex> tulos = new LinkedList<>(); // Tuloslista
 
         for (Vertex v:G.vertices()) {
-            v.setColor(Graph.GRAY);
-            tulos.add(v);
-            if (dfsColor(v, Graph.GREY, tulos)) {
-                return tulos;
+            v.setColor(Graph.GRAY); // väritetään aloitussolmu harmaaksi
+            tulos.add(v); // Lisätään aloitussolmu tulokseen
+            if (dfsColor(v, Graph.GREY, tulos, v)) { // lähdetään rekursiivisesti etsimään kehää ja mikäli sellainen löydetään, palautetaan se
+                while (tulos.get(0) != tulos.get(tulos.size()-1)) { // Poistetaan ennen kehää talletetut solmut. Viimeinen lisätty solmu on kehän loppusolmu
+                    tulos.remove(0);
+                }
+                return tulos; // tulos sisältää kehän siten, että siinä on ensimmäisenä ja viimeisenä viittaus samaan. Jomman kumman voisi poistaa vielä jos haluttaisiin vain kehän solmut. Varmaankin ehkä oli pitänytkin, mutta tuloste on selvempi näin. Eli vielä removeFirst kerran esim.
             }
-            tulos.remove(tulos.size()-1);
-            v.setColor(Graph.WHITE);
+            tulos.remove(tulos.size()-1); // Poistetaan aloitussolmu jos tästä aloituksesta ei löytynyt kehää
+            v.setColor(Graph.WHITE); // Väritetään aloitussolmu valkoiseksi. Tämä ei tarpeellista sillä osaverkko on jo käyty läpi, mutta ei ole myöskään syytä jättää eriväriseksi.
         }
-
         return null;
     }
 
 
-
-
     // syvyyssuuntainen lÃ¤pikynti vÃ¤rittÃ¤en vÃ¤rillÃ¤ c
-    static boolean dfsColor(Vertex v, int color, List<Vertex> tulos) {
+    static boolean dfsColor(Vertex v, int color, List<Vertex> tulos, Vertex edellinen) {
         for (Vertex w : v.neighbors()) {
             tulos.add(w);
-            if (w.getColor() == color) {
-                return true;//valmis
+            if (w != edellinen) {
+                if (w.getColor() == color) {
+                    return true;//valmis
+                }
+                w.setColor(color);
+                if (dfsColor(w, color, tulos, v)) {
+                    return true;
+                }
             }
-            w.setColor(color);
-            if (dfsColor(w, color, tulos)) {
-                return true;
-            }
+            tulos.remove(tulos.size()-1);
         }
         v.setColor(Graph.WHITE);
-        tulos.remove(tulos.size()-1);
         return false;
     }
 
@@ -86,7 +90,4 @@ public class TRAII_23_t16_pohja {
         for (Vertex v : g.vertices())
             v.setColor(c);
     }
-
-
-
 }
