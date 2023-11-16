@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-
 public class TRAII_23_t14_pohja {
 
     public static void main(String[] args) {
@@ -26,12 +25,10 @@ public class TRAII_23_t14_pohja {
         if (dst == null)
             return;
 
-
         Set<Vertex> q = quorum(graph, dst, 0.5F);
         System.out.println("\nCompanies that are under quorum of " + dst + " : " + q);
 
-    }   // main() 
-
+    }   // main()
 
     /**
      * 14. YhtiÃ¶llÃ¤ x on mÃ¤Ã¤rÃ¤ysvalta yhtiÃ¶ssÃ¤ y jos ja vain jos on olemassa yhtiÃ¶t z1,z 2,...,z k joissa yhtiÃ¶llÃ¤
@@ -74,7 +71,6 @@ public class TRAII_23_t14_pohja {
             }
         }
     }
-
 
     // example graph
     // for company "0" and limit:
