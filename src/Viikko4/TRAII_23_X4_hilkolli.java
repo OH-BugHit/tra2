@@ -73,7 +73,6 @@ public class TRAII_23_X4_hilkolli implements TRAII_23_X4 {
         Set<Vertex> potentiaalisetPuunJuuret = new HashSet<>();
         int tulos = 0;
         mahdollisetJuurisolmut(G, potentiaalisetPuunJuuret,1);
-
         for (Vertex v: potentiaalisetPuunJuuret) { // O(v) käydään läpi max v määrä solmuja ja max O(e) määrä kaaria (vain kehättömät mukana ). Täten O(v+e)
             if (!tarkistaPuu(v)) { // Jos ei löydy punaista solmua niin oli kelpo puu.
                 tulos++;

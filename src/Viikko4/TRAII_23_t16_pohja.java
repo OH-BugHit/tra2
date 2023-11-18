@@ -53,7 +53,7 @@ public class TRAII_23_t16_pohja {
         for (Vertex v:G.vertices()) {
             v.setColor(Graph.GRAY); // väritetään aloitussolmu harmaaksi
             tulos.add(v); // Lisätään aloitussolmu tulokseen
-            if (dfsColor(v, Graph.GREY, tulos, v)) { // lähdetään rekursiivisesti etsimään kehää ja mikäli sellainen löydetään, palautetaan se
+            if (dfsColor(v, Graph.GREY, tulos, null)) { // lähdetään rekursiivisesti etsimään kehää ja mikäli sellainen löydetään, palautetaan se
                 while (tulos.get(0) != tulos.get(tulos.size()-1)) { // Poistetaan ennen kehää talletetut solmut. Viimeinen lisätty solmu on kehän loppusolmu
                     tulos.remove(0);
                 }

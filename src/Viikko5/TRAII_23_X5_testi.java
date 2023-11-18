@@ -9,7 +9,7 @@ import java.util.*;
 
 public class TRAII_23_X5_testi {
 
-    static TRAII_23_X5 testattava = new TRAII_23_X5_pohja();
+    static TRAII_23_X5 testattava = new TRAII_23_X5_hilkolli();
     //                                              ^^^^ oma tunnus tÃ¤hÃ¤n
 
     static Random rnd = new Random();

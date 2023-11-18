@@ -85,18 +85,40 @@ public class TRAII_23_t19_20_pohja {
     }
 
     /**
+     * tehtävä 19
+     * Aikavaativuus = O(V). Käydään syvyyshaulla verkko läpi. Käydään jokainen solmu vain kerran läpi.
      * TÃ¤ydennÃ¤ epÃ¤yhtenÃ¤inne verkko yhtenÃ¤iseksi lisÃ¤Ã¤mÃ¤llÃ¤ kaaria komponenttien vÃ¤lille.
      * Jos verkko on jo yhtenÃ¤inen, ei tarvitse tehdÃ¤ mitÃ¤Ã¤n.
      * @param G syÃ¶teverkko
      */
     static void taydennaYhtenaiseksi(Graph G) {
 
-        // TODO
+        int indeksi = 1;
+        LinkedList<Vertex> eriVerkot = new LinkedList<>();
+        for (Vertex v: G.vertices()) {
+            v.setIndex(0);
+        }
+        for (Vertex v: G.vertices()) {
+            if (v.getIndex() == 0) {
+                eriVerkot.add(v);
+                merkkaaVerkko(v,indeksi);
+                indeksi++;
+            }
+        }
+        while (eriVerkot.size() > 1) {
+            eriVerkot.removeLast().addEdge(eriVerkot.getFirst());
+        }
 
     }   // taydennaYhtenaiseksi()
 
-
-
+    private static void merkkaaVerkko(Vertex v, int indeksi) {
+        if (v.getIndex() == 0) {
+            v.setIndex(indeksi);
+            for (Vertex v2: v.neighbors()) {
+                    merkkaaVerkko(v2, indeksi);
+            }
+        }
+    }
 
 
     /**
