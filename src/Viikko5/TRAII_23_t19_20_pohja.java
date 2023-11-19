@@ -17,7 +17,7 @@ public class TRAII_23_t19_20_pohja {
 
         // defaults
         int vertices = 8;
-        int edges = 9;
+        int edges = 8;
 
         if (args.length > 0)
             vertices = Integer.parseInt(args[0]);
@@ -210,20 +210,6 @@ public class TRAII_23_t19_20_pohja {
                         }
                     }
                     break;
-                }
-            }
-
-            if (leikkaussolmunNaapurit.size() > 1) { // Ja sitten se pyörittely kun on enemmän kuin yksi jäljellä
-                indeksi--; // Samaa indeksiä käytetään kahteen asiaan. Tällä vähennyksellä asetetaan leikkaussolmunNaapurit.getin hakunumero oikein ja vaihdetaan listas
-                Vertex ydinsolmu = leikkaussolmunNaapurit.get(indeksi).get(0); // Valitaan ns. "ydinsolmu" josta tulee kyllä tosi hyvä leikkauskohde kans... otetaan viimeisen joukon ensimmäinen solmu
-                for (int j = indeksi; j > 0; j--) { //
-                    List<Vertex> joukko = leikkaussolmunNaapurit.get(indeksi);
-                    for (Vertex solmu : joukko) {
-                        if (!ydinsolmu.isAdjacent(solmu) && ydinsolmu != solmu) {
-                            ydinsolmu.addEdge(solmu);
-                            break;
-                        }
-                    }
                 }
             }
 
