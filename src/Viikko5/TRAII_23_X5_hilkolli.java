@@ -12,9 +12,18 @@ public class TRAII_23_X5_hilkolli implements TRAII_23_X5 {
      * ITSEARVIOINTI TÃ„HÃ„N:
      *
      * Aluksi epäilytti saako tästä tehokasta, mutta tarkalla suunnitelmalla onnistui varsin kivuttomasti
-     * Aikavaativuus: O(E) Tarkemmin korkeintaan: lähtevätKaaret * (kaaret-lähtevätKaaret) * 2? Alkaa mennä jo vaikeaksi näiden laskeminen, mutta kertaluokka on kyllä tuossa.
-     * Kaikkea tehdään max maxPolkujen määrä ja kaikki mitä tehdään on vakioaikaista
+     * Aikavaativuus: O(E)
+     * Lahtösolmun kaarille suoritetaan korkeintaan (kaaret - lahtösolmun kaaret) * jotai vähemmän kun (kaaret - lahtösolmun kaaret) operaatioita.
+     * Eli: Lähtösolmun kaaret * (kaaret-lähtösolmun kaaret) * x     | x < (kaaret-lähtösolmun kaaret)
      *
+     * Eli: lähtösolmun kaaret * jotain vähemmän kun kaikki kaaret kun lähtösolmun kaaret > 0 * joku pienempi vakio kuin vasemmalla on ollut
+     *
+     * Lähtökaaret tai niiden looppi voi olla, kumpi vaan, suurempi tässä kertolaskussa, mutta korkeintaan E-1. Näin ollen. = O(E).
+     * Lisäksi jos lähtösolmulla ei kaaria niin operaatio on O(1) ja jos kaikki kaaret niin O(E))
+     *
+     * Varmaankin paremmin sanottu että aikavaativuus on o(E^2)
+     *
+     * Tein paljon ajattelua ja analyysia ja mielestäni parantaa ei voi. Solmuhin ei kannata tallentaa tietoa edessä olevasta verkosta (tämä periaatteessa muuten voisi olla ainoa keino parantaa).
      **/
     /**
      * Kaikki erilaiset annetusta solmusta lahtoSolmu lÃ¤htevÃ¤t
@@ -34,16 +43,23 @@ public class TRAII_23_X5_hilkolli implements TRAII_23_X5 {
     @Override
     public Set<List<Vertex>> kaikkiMaxPPolut(Graph verkko, Vertex lahtoSolmu, float maxPaino) {
         HashSet<List<Vertex>> tulos = new HashSet<>();
-        for (Edge kaikki: verkko.edges()) { // Väritetään kaikki kaaret valkoiseksi // Tästä tulee nyt ainakin se O(E)
-            kaikki.setColor(Graph.WHITE); // Tämän voisi jättää väliin jos oletettaisiin kaikkien kaarien olevan varmasti värittömiä. Toisaalta voitaisiin lisätä hashSettiin käytetyt kaaret ja tarkastellä löytyykö sieltä niin väritystä ei tarvitsisi käyttää ollenkaan.
+        boolean oliLahto = false;
+        for (Edge e: lahtoSolmu.edges()) { // Tämmönen pieni kikka tänne et saadaan O(1) jos ei lähtösolmuja. Väritys muuten tekee O(E)
+            oliLahto = true;
+            break;
         }
-        for (Edge kaari: lahtoSolmu.edges()) { // Lähdetään liikkeelle lähtösolmun kaaria pitkin
-            if (kaari.getWeight() <= maxPaino) { // Mutta vain, mikäli lähtösolmun kaaren paino on max maxPaino
-                lahtoSolmu.setColor(Graph.BLACK); // Väritetään lähtösolmu käytetyksi, jottei sitä lisätä uudestaan. (Kehä)
-                List<Vertex> reitti = new LinkedList<>(); // Luodaan lista johon polku tallennetaan. Tämä sitten lisätään tulokseen
-                reitti.add(lahtoSolmu); // listaan lisätään tämä aina polun aloitussolmuksi
-                selevitaMaxPolut(kaari, reitti, maxPaino, tulos, lahtoSolmu); // Selvitetään rekursiivisesti polut. Polut lisätään joka rekursion tasolla suoraan tulokseen
-                lahtoSolmu.setColor(Graph.WHITE); // Tämä ei ole pakollinen sillä for-loopissa se muutetaan kuitenkin takaisin black. Halusin vaan jättää verkon yksiväriseksi.
+        if (oliLahto) {
+            for (Edge kaikki : verkko.edges()) { // Väritetään kaikki kaaret valkoiseksi // Tästä tulee nyt ainakin se O(E)
+                kaikki.setColor(Graph.WHITE); // Tämän voisi jättää väliin jos oletettaisiin kaikkien kaarien olevan varmasti värittömiä. Niin ne taitaa ollakin, mut en pidä olettamisesta.
+            }
+            for (Edge kaari : lahtoSolmu.edges()) { // Lähdetään liikkeelle lähtösolmun kaaria pitkin
+                if (kaari.getWeight() <= maxPaino) { // Mutta vain, mikäli lähtösolmun kaaren paino on max maxPaino
+                    lahtoSolmu.setColor(Graph.BLACK); // Väritetään lähtösolmu käytetyksi, jottei sitä lisätä uudestaan. (Kehä)
+                    List<Vertex> reitti = new LinkedList<>(); // Luodaan lista johon polku tallennetaan. Tämä sitten lisätään tulokseen
+                    reitti.add(lahtoSolmu); // listaan lisätään tämä aina polun aloitussolmuksi
+                    selevitaMaxPolut(kaari, reitti, maxPaino, tulos, lahtoSolmu); // Selvitetään rekursiivisesti polut. Polut lisätään joka rekursion tasolla suoraan tulokseen
+                    lahtoSolmu.setColor(Graph.WHITE); // Tämä ei ole pakollinen sillä for-loopissa se muutetaan kuitenkin takaisin black. Halusin vaan jättää solmun valkoiseksi lopussa.
+                }
             }
         }
         return tulos; // Palautetaan polkulistojen joukko
@@ -65,12 +81,12 @@ public class TRAII_23_X5_hilkolli implements TRAII_23_X5 {
             kaari.getEndPoint(edellinenSolmu).setColor(Graph.BLACK); // Väritetään käytetty solmu mustaksi                                                               |
             List<Vertex> lisays = new LinkedList<>(reitti); // Lisätään uusin solmu polkuun                                                                              |
             tulos.add(lisays); // Lisätään uusi reitti (joka on nyt yhden solmun pidempi), tulokseen                                                                     |
-            for (Edge kaariSeuraavaTaso: kaari.getEndPoint(edellinenSolmu).edges()) { // Aletaan käymään päästystä solmusta eteenpäin kaaria.                                       |
-                if (kaariSeuraavaTaso.getEndPoint(kaari.getEndPoint(edellinenSolmu)).getColor() != Graph.BLACK) {// Tarkistetaan ettei kaaren päässä ole käytetty solmu!            |
-                    selevitaMaxPolut(kaariSeuraavaTaso, reitti, painoaJaljella, tulos, kaari.getEndPoint(edellinenSolmu)); // Homma jatkuu rekursiossa -----------------------------
+            for (Edge kaariSeuraavaTaso: kaari.getEndPoint(edellinenSolmu).edges()) { // Aletaan käymään päästystä solmusta eteenpäin kaaria.                            |
+                if (kaariSeuraavaTaso.getEndPoint(kaari.getEndPoint(edellinenSolmu)).getColor() != Graph.BLACK) {// Tarkistetaan ettei kaaren päässä ole käytetty solmu! |
+                    selevitaMaxPolut(kaariSeuraavaTaso, reitti, painoaJaljella, tulos, kaari.getEndPoint(edellinenSolmu)); // Homma jatkuu rekursiossa ------------------
                 }
-            }
-            reitti.remove(reitti.size()-1); // Poistetaan polulta, sillä kun palataan rekursiossa ylöspäin, niin tämä solmu ei kuulu enää mahdolliseen seuraavaan uuteen polkuun.
+            } // Kun käyty tämä reitti loppuun niin
+            reitti.remove(reitti.size()-1); // Poistetaan solmu polulta, sillä kun palataan rekursiossa ylöspäin, niin tämä solmu ei kuulu enää mahdolliseen seuraavaan uuteen polkuun.
         }
         kaari.setColor(Graph.WHITE); // Väritellään kaari taas käytettäväksi
         kaari.getEndPoint(edellinenSolmu).setColor(Graph.WHITE); // Väritetään solmu taas käytettäväksi
