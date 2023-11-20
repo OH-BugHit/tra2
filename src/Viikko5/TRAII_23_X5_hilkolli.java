@@ -11,17 +11,14 @@ public class TRAII_23_X5_hilkolli implements TRAII_23_X5 {
     /**
      * ITSEARVIOINTI TÃ„HÃ„N:
      *
-     * Aluksi epäilytti saako tästä tehokasta, mutta tarkalla suunnitelmalla onnistui varsin kivuttomasti
-     * Aikavaativuus: O(E)
-     * Lahtösolmun kaarille suoritetaan korkeintaan (kaaret - lahtösolmun kaaret) * jotai vähemmän kun (kaaret - lahtösolmun kaaret) operaatioita.
-     * Eli: Lähtösolmun kaaret * (kaaret-lähtösolmun kaaret) * x     | x < (kaaret-lähtösolmun kaaret)
-     *
-     * Eli: lähtösolmun kaaret * jotain vähemmän kun kaikki kaaret kun lähtösolmun kaaret > 0 * joku pienempi vakio kuin vasemmalla on ollut
+     * Aluksi epäilytti saako tästä edes suhteellisen tehokasta, mutta tarkalla suunnitelmalla onnistui varsin kivuttomasti
+     * Aikavaativuus: O(E^3)
+     * Lahtösolmun kaarille suoritetaan korkeintaan suunnilleen (kaaret - lahtösolmun kaaret) * 2 operaatioita.
+     * Eli: Lähtösolmun kaaret * (kaaret-lähtösolmun kaaret) * 2    |
+     * Tästä voidaan laskea että aikavaativuus o(E^3) Ja O(E^2)
      *
      * Lähtökaaret tai niiden looppi voi olla, kumpi vaan, suurempi tässä kertolaskussa, mutta korkeintaan E-1. Näin ollen. = O(E).
      * Lisäksi jos lähtösolmulla ei kaaria niin operaatio on O(1) ja jos kaikki kaaret niin O(E))
-     *
-     * Varmaankin paremmin sanottu että aikavaativuus on o(E^2)
      *
      * Tein paljon ajattelua ja analyysia ja mielestäni parantaa ei voi. Solmuhin ei kannata tallentaa tietoa edessä olevasta verkosta (tämä periaatteessa muuten voisi olla ainoa keino parantaa).
      **/
@@ -74,7 +71,7 @@ public class TRAII_23_X5_hilkolli implements TRAII_23_X5 {
      * @param edellinenSolmu Viittaus edelliseen solmuun. Tarvitaan, jotta kaaresta saadaan vastakkainen pää
      */
     private void selevitaMaxPolut(Edge kaari, List<Vertex> reitti, float painoaJaljella, HashSet<List<Vertex>> tulos, Vertex edellinenSolmu) { //  <---------------------
-        if (kaari.getWeight() <= painoaJaljella && kaari.getColor() == Graph.WHITE) { // Tarkistetaan onko riittävästi painoa käytettävissä ja onko kaari käyttämätön    |
+        if (kaari.getColor() == Graph.WHITE && kaari.getWeight() <= painoaJaljella) { // Tarkistetaan onko riittävästi painoa käytettävissä ja onko kaari käyttämätön    |
             kaari.setColor(Graph.RED); // Merkitään kaari käytetyksi                                                                                                     |
             painoaJaljella -= kaari.getWeight(); // Vähennetään painoa, _jota välitetään eteenpäin_                                                                      |
             reitti.add(kaari.getEndPoint(edellinenSolmu)); // Lisätään polkuun, jota pitkin on päästy tänne, solmu johon pääsiin                                         |

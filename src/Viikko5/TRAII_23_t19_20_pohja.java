@@ -147,6 +147,7 @@ public class TRAII_23_t19_20_pohja {
 
 
     /**
+     * Tehtävä 20.
      * TÃ¤ydennÃ¤ verkko 2-yhtenÃ¤iseksi.
      * LisÃ¤Ã¤ kaaria siten, ettei verkossa enÃ¤Ã¤ ole leikkaussolmuja eikÃ¤ siltoja.
      * @param G syÃ¶teverkko
