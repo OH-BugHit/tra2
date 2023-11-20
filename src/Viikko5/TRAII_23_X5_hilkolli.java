@@ -12,15 +12,14 @@ public class TRAII_23_X5_hilkolli implements TRAII_23_X5 {
      * ITSEARVIOINTI TÃ„HÃ„N:
      *
      * Aluksi epäilytti saako tästä edes suhteellisen tehokasta, mutta tarkalla suunnitelmalla onnistui varsin kivuttomasti
-     * Aikavaativuus: O(E^3)
+     * Aikavaativuus: O(E^2)
      * Lahtösolmun kaarille suoritetaan korkeintaan suunnilleen (kaaret - lahtösolmun kaaret) * 2 operaatioita.
      * Eli: Lähtösolmun kaaret * (kaaret-lähtösolmun kaaret) * 2    |
-     * Tästä voidaan laskea että aikavaativuus o(E^3) Ja O(E^2)
+     * Tästä voidaan laskea että aikavaativuus O(E^2)
      *
-     * Lähtökaaret tai niiden looppi voi olla, kumpi vaan, suurempi tässä kertolaskussa, mutta korkeintaan E-1. Näin ollen. = O(E).
      * Lisäksi jos lähtösolmulla ei kaaria niin operaatio on O(1) ja jos kaikki kaaret niin O(E))
      *
-     * Tein paljon ajattelua ja analyysia ja mielestäni parantaa ei voi. Solmuhin ei kannata tallentaa tietoa edessä olevasta verkosta (tämä periaatteessa muuten voisi olla ainoa keino parantaa).
+     * Tein paljon ajattelua ja analyysia ja mielestäni parantaa ei voi. Solmuhin ei kannata liittää tietoa edessä olevasta verkosta, sillä tilavaativuus kasvaa turhan paljon (tämä periaatteessa muuten voisi olla ainoa keino parantaa).
      **/
     /**
      * Kaikki erilaiset annetusta solmusta lahtoSolmu lÃ¤htevÃ¤t
@@ -54,7 +53,7 @@ public class TRAII_23_X5_hilkolli implements TRAII_23_X5 {
                     lahtoSolmu.setColor(Graph.BLACK); // Väritetään lähtösolmu käytetyksi, jottei sitä lisätä uudestaan. (Kehä)
                     List<Vertex> reitti = new LinkedList<>(); // Luodaan lista johon polku tallennetaan. Tämä sitten lisätään tulokseen
                     reitti.add(lahtoSolmu); // listaan lisätään tämä aina polun aloitussolmuksi
-                    selevitaMaxPolut(kaari, reitti, maxPaino, tulos, lahtoSolmu); // Selvitetään rekursiivisesti polut. Polut lisätään joka rekursion tasolla suoraan tulokseen
+                    selevitaMaxPolut(kaari, reitti, maxPaino, tulos); // Selvitetään rekursiivisesti polut. Polut lisätään joka rekursion tasolla suoraan tulokseen
                     lahtoSolmu.setColor(Graph.WHITE); // Tämä ei ole pakollinen sillä for-loopissa se muutetaan kuitenkin takaisin black. Halusin vaan jättää solmun valkoiseksi lopussa.
                 }
             }
@@ -68,19 +67,19 @@ public class TRAII_23_X5_hilkolli implements TRAII_23_X5 {
      * @param reitti Polku, jota pitkin ollaan päädytty tähän rekursiotasoon
      * @param painoaJaljella Paljonko on käytettävissä painoa tässä rekursiotasossa
      * @param tulos Tulosjoukko, johon kelvolliset polut lisätään
-     * @param edellinenSolmu Viittaus edelliseen solmuun. Tarvitaan, jotta kaaresta saadaan vastakkainen pää
      */
-    private void selevitaMaxPolut(Edge kaari, List<Vertex> reitti, float painoaJaljella, HashSet<List<Vertex>> tulos, Vertex edellinenSolmu) { //  <---------------------
-        if (kaari.getColor() == Graph.WHITE && kaari.getWeight() <= painoaJaljella) { // Tarkistetaan onko riittävästi painoa käytettävissä ja onko kaari käyttämätön    |
-            kaari.setColor(Graph.RED); // Merkitään kaari käytetyksi                                                                                                     |
-            painoaJaljella -= kaari.getWeight(); // Vähennetään painoa, _jota välitetään eteenpäin_                                                                      |
-            reitti.add(kaari.getEndPoint(edellinenSolmu)); // Lisätään polkuun, jota pitkin on päästy tänne, solmu johon pääsiin                                         |
-            kaari.getEndPoint(edellinenSolmu).setColor(Graph.BLACK); // Väritetään käytetty solmu mustaksi                                                               |
-            List<Vertex> lisays = new LinkedList<>(reitti); // Lisätään uusin solmu polkuun                                                                              |
-            tulos.add(lisays); // Lisätään uusi reitti (joka on nyt yhden solmun pidempi), tulokseen                                                                     |
-            for (Edge kaariSeuraavaTaso: kaari.getEndPoint(edellinenSolmu).edges()) { // Aletaan käymään päästystä solmusta eteenpäin kaaria.                            |
-                if (kaariSeuraavaTaso.getEndPoint(kaari.getEndPoint(edellinenSolmu)).getColor() != Graph.BLACK) {// Tarkistetaan ettei kaaren päässä ole käytetty solmu! |
-                    selevitaMaxPolut(kaariSeuraavaTaso, reitti, painoaJaljella, tulos, kaari.getEndPoint(edellinenSolmu)); // Homma jatkuu rekursiossa ------------------
+    private void selevitaMaxPolut(Edge kaari, List<Vertex> reitti, float painoaJaljella, HashSet<List<Vertex>> tulos) {
+        Vertex edellinenSolmu = reitti.get(reitti.size()-1);
+        if (kaari.getColor() == Graph.WHITE && kaari.getWeight() <= painoaJaljella) { // Tarkistetaan onko riittävästi painoa käytettävissä ja onko kaari käyttämätön
+            kaari.setColor(Graph.RED); // Merkitään kaari käytetyksi
+            painoaJaljella -= kaari.getWeight(); // Vähennetään painoa, _jota välitetään eteenpäin_
+            reitti.add(kaari.getEndPoint(edellinenSolmu)); // Lisätään polkuun, jota pitkin on päästy tänne, solmu johon pääsiin
+            kaari.getEndPoint(edellinenSolmu).setColor(Graph.BLACK); // Väritetään käytetty solmu mustaksi
+            List<Vertex> lisays = new LinkedList<>(reitti); // Lisätään uusin solmu polkuun
+            tulos.add(lisays); // Lisätään uusi reitti (joka on nyt yhden solmun pidempi), tulokseen
+            for (Edge kaariSeuraavaTaso: kaari.getEndPoint(edellinenSolmu).edges()) { // Aletaan käymään päästystä solmusta eteenpäin kaaria
+                if (kaariSeuraavaTaso.getEndPoint(kaari.getEndPoint(edellinenSolmu)).getColor() != Graph.BLACK) {// Tarkistetaan ettei kaaren päässä ole käytetty solmu!
+                    selevitaMaxPolut(kaariSeuraavaTaso, reitti, painoaJaljella, tulos); // Homma jatkuu rekursiossa
                 }
             } // Kun käyty tämä reitti loppuun niin
             reitti.remove(reitti.size()-1); // Poistetaan solmu polulta, sillä kun palataan rekursiossa ylöspäin, niin tämä solmu ei kuulu enää mahdolliseen seuraavaan uuteen polkuun.
