@@ -11,13 +11,15 @@ public class TRAII_23_X5_hilkolli implements TRAII_23_X5 {
     /**
      * ITSEARVIOINTI TÃ„HÃ„N:
      *
-     * Aluksi epäilytti saako tästä edes suhteellisen tehokasta, mutta tarkalla suunnitelmalla onnistui varsin kivuttomasti
-     * Aikavaativuus: O(E^2)
-     * Lahtösolmun kaarille suoritetaan korkeintaan suunnilleen (kaaret - lahtösolmun kaaret) * 2 operaatioita.
-     * Eli: Lähtösolmun kaaret * (kaaret-lähtösolmun kaaret) * 2    |
-     * Tästä voidaan laskea että aikavaativuus O(E^2)
+     * Ohjelman suunnitteleminen ja toteutus olivat suhteellisen yksinkertaisia.
+     * Aikavaativuutta mietin aivan liikaa, varsinkin kun ensisilmäyksellä tehtävään ajattelin sen olevankin maxpolkujen verran.
      *
-     * Lisäksi jos lähtösolmulla ei kaaria niin operaatio on O(1) ja jos kaikki kaaret niin O(E))
+     * Aikavaativuus on siis: O(V!)
+     * Aikavaativuus voidaan tässä tapauksessa päätellä tavoitteesta ja käytetyistä operaatioista.
+     * Koska tavoitteena on kerätä kaikki polut (pahimmassa tapauksessa), voidaan väittää että kun kaikki käytetyt operaatiot ovat vakioaikaisia ja tehdään kaikki vaikioaikaset operaatiot
+     * maksimissaan V! kertaa (Eli kaikkien mahdollisten polkujen määrä kun toisto ei ole sallittu), on aikavaativuus O(V!).
+     *
+     * Lisäksi mainittakoon triviaaleina jos lähtösolmulla ei kaaria niin operaatio on O(1) ja jos kaikki kaaret niin O(E))
      *
      * Tein paljon ajattelua ja analyysia ja mielestäni parantaa ei voi. Solmuhin ei kannata liittää tietoa edessä olevasta verkosta, sillä tilavaativuus kasvaa turhan paljon (tämä periaatteessa muuten voisi olla ainoa keino parantaa).
      **/
@@ -45,8 +47,8 @@ public class TRAII_23_X5_hilkolli implements TRAII_23_X5 {
             break;
         }
         if (oliLahto) {
-            for (Edge kaikki : verkko.edges()) { // Väritetään kaikki kaaret valkoiseksi // Tästä tulee nyt ainakin se O(E)
-                kaikki.setColor(Graph.WHITE); // Tämän voisi jättää väliin jos oletettaisiin kaikkien kaarien olevan varmasti värittömiä. Niin ne taitaa ollakin, mut en pidä olettamisesta.
+            for (Edge kaikki : verkko.edges()) { // Väritetään kaikki kaaret valkoiseksi
+                kaikki.setColor(Graph.WHITE); // Tämän voisi jättää väliin jos oletettaisiin kaikkien kaarien olevan varmasti värittömiä, mutta en pidä olettamisesta.
             }
             for (Edge kaari : lahtoSolmu.edges()) { // Lähdetään liikkeelle lähtösolmun kaaria pitkin
                 if (kaari.getWeight() <= maxPaino) { // Mutta vain, mikäli lähtösolmun kaaren paino on max maxPaino
