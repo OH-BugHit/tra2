@@ -16,12 +16,13 @@ public class TRAII_23_X5_hilkolli implements TRAII_23_X5 {
      *
      * Aikavaativuus on siis: O(V!)
      * Aikavaativuus voidaan tässä tapauksessa päätellä tavoitteesta ja käytetyistä operaatioista.
-     * Koska tavoitteena on kerätä kaikki polut (pahimmassa tapauksessa), voidaan väittää että kun kaikki käytetyt operaatiot ovat vakioaikaisia ja tehdään kaikki vaikioaikaset operaatiot
-     * maksimissaan V! kertaa (Eli kaikkien mahdollisten polkujen määrä kun toisto ei ole sallittu), on aikavaativuus O(V!).
+     * Koska tavoitteena on kerätä kaikki polut (pahimmassa tapauksessa), voidaan väittää, että kun kaikki käytetyt operaatiot ovat vakioaikaisia (pl. uuden polun luominen edellisen pohjalta, josta saadaan kyllä lisää kerrointa, muttei sen enempää)
+     * ja tehdään kaikki operaatiot maksimissaan V! kertaa (eli kaikkien mahdollisten polkujen määrä kun toisto ei ole sallittu), on aikavaativuus O(V!).
      *
-     * Lisäksi mainittakoon triviaaleina jos lähtösolmulla ei kaaria niin operaatio on O(1) ja jos kaikki kaaret niin O(E))
+     * Lisäksi mainittakoon triviaaleina jos lähtösolmulla ei kaaria niin algoritmini aikavaativuus on O(1) ja jos kaikki kaaret niin O(E))
      *
-     * Tein paljon ajattelua ja analyysia ja mielestäni parantaa ei voi. Solmuhin ei kannata liittää tietoa edessä olevasta verkosta, sillä tilavaativuus kasvaa turhan paljon (tämä periaatteessa muuten voisi olla ainoa keino parantaa).
+     * Tein paljon ajattelua ja analyysia ja mielestäni ei varsinkaan pahinta tapausta voi helpottaa.
+     * Periaatteessa jos oltaisiin tunnistettu mahdolliset leikkaussillat, voitaisiin niiden takaiseen leikkaussolmuun tallentaa sen takana olevat polut, vaadittavan painon kanssa vaikkapa painojärjestykseen, kun ne on kerran käyty.
      **/
     /**
      * Kaikki erilaiset annetusta solmusta lahtoSolmu lÃ¤htevÃ¤t
