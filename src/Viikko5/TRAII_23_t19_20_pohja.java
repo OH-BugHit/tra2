@@ -16,8 +16,8 @@ public class TRAII_23_t19_20_pohja {
     public static void main(String[] args) {
 
         // defaults
-        int vertices = 8;
-        int edges = 8;
+        int vertices = 70;
+        int edges = 80;
 
         if (args.length > 0)
             vertices = Integer.parseInt(args[0]);
@@ -148,6 +148,7 @@ public class TRAII_23_t19_20_pohja {
 
     /**
      * Tehtävä 20.
+     * Voi tehdä ylimääräisen kaaren sattumalta jos kahden eri komponentin leikkaussolmut ovat naapureita keskenään ja ne kaksi kaarta eivät ole naapureita keskenään.
      * TÃ¤ydennÃ¤ verkko 2-yhtenÃ¤iseksi.
      * LisÃ¤Ã¤ kaaria siten, ettei verkossa enÃ¤Ã¤ ole leikkaussolmuja eikÃ¤ siltoja.
      * @param G syÃ¶teverkko
@@ -176,23 +177,23 @@ public class TRAII_23_t19_20_pohja {
                     if (done) break;
                 }
             }
-            testataanLyheniko = L.size(); // Tässä otetaan talteen leikkaussolmujen koko. Jos seuraavalla while(true) kierroksella edelleen sama niin jäi kiinni.
+            testataanLyheniko = L.size(); // Tässä otetaan talteen leikkaussolmujen koko. Jos seuraavalla while(true) kierroksella edelleen sama niin jää kiinni.
             int indeksi = 0; // Indeksinumerot alkaa 0+1
-            for (Vertex nollaksi : G.vertices()) {
-                nollaksi.setIndex(-1); // Asetetaan kaikkien solmujen indeksinumeroksi -1, leikkaussolmut() käyttää ainakin solmujen indeksejä
+            for (Vertex alustaSolmu : G.vertices()) {
+                alustaSolmu.setIndex(-1); // Asetetaan kaikkien solmujen indeksinumeroksi -1, leikkaussolmut() käyttää ainakin solmujen indeksejä
             }
 
             HashMap<Integer, List<Vertex>> leikkaussolmunNaapurit = new HashMap<>(); // Kuvaukseen talletetaan <Komponentin solmujen indeksinumero, komponentin solmut listana>
 
-            for (Vertex leikkausSolmu : L) {
-                indeksi++; // indeksinumero leikkaussolmun naapureille
+            for (Vertex leikkausSolmu : L) { // Käydään leikkaussolmut läpi eri komponenttien merkitsemiseksi ja leikkaussolmujen merkitsemiseksi
+                indeksi++; // indeksinumero leikkaussolmun naapureille, alkaa numerosta 1
                 leikkausSolmu.setIndex(0); // leikkaussolmut indeksoidaan 0
                 for (Edge naapuriin : leikkausSolmu.edges()) { // etsitään leikkaussolmun naapurit indeksointia varten
                     if (naapuriin.getEndPoint(leikkausSolmu).getIndex() != 0) { // Jos leikkaussolmun naapuri on leikkaussolmu (ei toki haluta yhdistää kahta leikkaussolmua toisiinsa) nin ei muokata sitä sitten
                         naapuriin.getEndPoint(leikkausSolmu).setIndex(indeksi); // Ja jos ei ollut niin annetaan sille oman 2-yhteisen komponentin indeksi
                         List<Vertex> tmp = new LinkedList<>(); // luodaan lista näistä naapureista
                         if (leikkaussolmunNaapurit.containsKey(indeksi)) {
-                            tmp = leikkaussolmunNaapurit.get(indeksi); // ja jos sellainen oli jo niin otetaan ne mukaan
+                            tmp = leikkaussolmunNaapurit.get(indeksi); // ja jos sellainen oli jo niin otetaan ne mukaan??
                         }
                         tmp.add(naapuriin.getEndPoint(leikkausSolmu));
                         leikkaussolmunNaapurit.put(indeksi, tmp); // No nyt on sitten kuvauksessa (tai kun kaikki for-loopissa käyty läpi niin sitten on) <indeksi, komponentin solmut listana>
@@ -218,7 +219,7 @@ public class TRAII_23_t19_20_pohja {
                 Vertex ydinsolmu = leikkaussolmunNaapurit.get(indeksi).get(0); // Valitaan ns. "ydinsolmu" josta tulee kyllä tosi hyvä leikkauskohde kans... otetaan viimeisen joukon ensimmäinen solmu
                 indeksi--; // Samaa indeksiä käytetään kahteen asiaan. Tällä vähennyksellä asetetaan leikkaussolmunNaapurit.getin hakunumero oikein ja vaihdetaan listas
                 for (int j = indeksi; j > 0; j--) { //
-                 List<Vertex> joukko = leikkaussolmunNaapurit.get(indeksi); // hei nyt ei oo hyvä
+                 List<Vertex> joukko = leikkaussolmunNaapurit.get(indeksi);
                     for (Vertex solmu : joukko) {
                         if (!ydinsolmu.isAdjacent(solmu) && ydinsolmu != solmu) {
                             ydinsolmu.addEdge(solmu);
