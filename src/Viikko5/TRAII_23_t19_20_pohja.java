@@ -93,7 +93,6 @@ public class TRAII_23_t19_20_pohja {
      * @param G syÃ¶teverkko
      */
     static void taydennaYhtenaiseksi(Graph G) {
-
         int indeksi = 1; // Indeksi jolla merkitään eri komponenttien solmut keskenään samaksi
         LinkedList<Vertex> eriVerkot = new LinkedList<>();
         for (Vertex v: G.vertices()) {
@@ -109,7 +108,6 @@ public class TRAII_23_t19_20_pohja {
         while (eriVerkot.size() > 1) {
             eriVerkot.removeLast().addEdge(eriVerkot.getFirst()); // Lisätään kaikista komponenteista kaari ensimmäisenä läpikäytyyn solmuun. Solmusta 0 (eli ensimmäisen komponentin ensimmäisestä solmusta) tulee tosin aika houketteleva leikkaussolmu.
         }
-
     }   // taydennaYhtenaiseksi()
 
     private static void merkkaaVerkko(Vertex v, int indeksi) {
