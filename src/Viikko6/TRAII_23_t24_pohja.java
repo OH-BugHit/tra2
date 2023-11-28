@@ -34,7 +34,7 @@ public class TRAII_23_t24_pohja {
      * @param avain etsittÃ¤vÃ¤ avain
      * @param teksti alkuperÃ¤inen teksti
      * @param loppuosaTaulukko  loppuosataulukko
-     * @return avaimen esiintymiskohta, tai -1 jollei avainta lÃ¶ydy tekstistÃ¤
+     * @return avaimen esiintymiskohta, tai -1 jollei avainta lÃ¶ydy tekstistÃ¤ AA
      */
     static int etsiLoppuosaTaulukosta(String avain, String teksti, Integer[] loppuosaTaulukko) {
         int alku = 0;
@@ -49,8 +49,8 @@ public class TRAII_23_t24_pohja {
                 if (cmp == 0) { // Jos löytyi niin palautetaan indeksi josta löytyi
                     return loppuosaTaulukko[indeksi];
                 }
-                if (cmp < 0) {
-                    alku = indeksi +1;
+                if (cmp < 0) { // Jos teksti on arvoltaan pienempi kuin avain (teksti tulee aakkosissa ennen avainta) niin etsitään loppuosatalukosta myöhemmästä vaiheesta
+                    alku = indeksi +1; // +1 ja -1 koska indeksi oli äsken tutkittavana
                 } else {
                     loppu = indeksi -1; // Jos teksti on arvoltaa suurempi kuin avain niin etsitään aiemmasta vaiheesta loppuosataulua
                 }

@@ -9,7 +9,7 @@ public class TRAII_23_t22_pohja {
     public static void main(String[] args) {
 
         // defaults
-        int rahaSumma = 80;
+        int rahaSumma = 69;
 
         // rahasumma komentoriviltÃ¤
         if (args.length > 0)
@@ -48,7 +48,7 @@ public class TRAII_23_t22_pohja {
      */
     static int[] dynjako(int rahaSumma, Collection<Integer> Kolikot) {
         int[] kolikkoMaara = new int[rahaSumma + 1];
-        int[] kolikot = new int[rahaSumma +1];
+        int[] kolikkoTaulukko = new int[rahaSumma +1];
         kolikkoMaara[0] = 0;
         // haetaan ja talletetaan kaikki osaratkaisut
         for (int rahaSummaIter = 1; rahaSummaIter <= rahaSumma; rahaSummaIter++) {
@@ -57,7 +57,6 @@ public class TRAII_23_t22_pohja {
             // kullakin kolikolla
             for (Integer kolikko : Kolikot) {
                 if (kolikko <= rahaSummaIter) {
-
                     int kolikoita = kolikkoMaara[rahaSummaIter - kolikko] + 1;
                     if (kolikoita < min) {
                         koli = kolikko;
@@ -65,10 +64,10 @@ public class TRAII_23_t22_pohja {
                     }
                 }
             }
-            kolikot[rahaSummaIter] = koli;
+            kolikkoTaulukko[rahaSummaIter] = koli;
             kolikkoMaara[rahaSummaIter] = min;
         }
-        return kolikot;
+        return kolikkoTaulukko;
     }
 
     /**
@@ -83,7 +82,7 @@ public class TRAII_23_t22_pohja {
         int[] kolikkoLista = dynjako(rahaSumma, Kolikot);
         while (rahaSumma > 0) {
             tulos.add(kolikkoLista[rahaSumma]);
-            rahaSumma -=kolikkoLista[rahaSumma];
+            rahaSumma -= kolikkoLista[rahaSumma];
         }
         return tulos;
     }
