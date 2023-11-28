@@ -37,16 +37,31 @@ public class TRAII_23_t24_pohja {
      * @return avaimen esiintymiskohta, tai -1 jollei avainta lÃ¶ydy tekstistÃ¤
      */
     static int etsiLoppuosaTaulukosta(String avain, String teksti, Integer[] loppuosaTaulukko) {
-
-        // TODO
-
-        // kÃ¤ytÃ¤ puolitushakua (esim TRAI, luentomateriaalin kohta 1.5)
-        // siten, ettÃ¤ puolitushaet loppuosataulukosta, mutta teet vertailut
-        // loppuosataulukon osoittamasta paikasta merkkijonoa
-
-        // hakeminen suoraan tekstistÃ¤ (esim. String.firstIndex()) _ei_ kelpaa
-
-
+        int alku = 0;
+        int loppu = loppuosaTaulukko.length -1;
+        int indeksi;
+        while (alku <= loppu) {
+            indeksi = alku + (loppu - alku) / 2;
+            if (avain.length() <= teksti.substring(loppuosaTaulukko[indeksi]).length()) { // Tarkistetaan riittääkö tekstin pituus
+                int alkukohta =  loppuosaTaulukko[indeksi];
+                int loppukohta =  loppuosaTaulukko[indeksi]+ avain.length();
+                int cmp = teksti.substring(alkukohta, loppukohta).compareTo(avain); // Verrataan avainta indeksin kohdan tekstiin
+                if (cmp == 0) { // Jos löytyi niin palautetaan indeksi josta löytyi
+                    return loppuosaTaulukko[indeksi];
+                }
+                if (cmp < 0) {
+                    alku = indeksi +1;
+                } else {
+                    loppu = indeksi -1; // Jos teksti on arvoltaa suurempi kuin avain niin etsitään aiemmasta vaiheesta loppuosataulua
+                }
+            } else {
+                if (teksti.substring(loppuosaTaulukko[indeksi]).compareTo(avain) < 0) {
+                    alku = indeksi +1;
+                } else {
+                    loppu = indeksi -1;
+                }
+            }
+        }
         return -1;  // jollei lÃ¶ytynyt
     }
 
