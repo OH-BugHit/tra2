@@ -8,7 +8,7 @@ public class TRAII_23_t24_pohja {
     public static void main(String[] args) {
 
         // esimerkkiteksti josta muodostetaan loppuosataulukko
-        String teksti = "abcccaabba";
+        String teksti = "Process finished with exit code 0";
 
         System.out.println("Merkkijono:" + teksti);
 
@@ -19,11 +19,11 @@ public class TRAII_23_t24_pohja {
 
         System.out.println("\nEtsitÃ¤Ã¤n:");
         // kokeillaan paria etsimistÃ¤
-        System.out.println("aaa: " + etsiLoppuosaTaulukosta("aaa", teksti, lot));    // ei lÃ¶ydy
-        System.out.println("abc: " + etsiLoppuosaTaulukosta("abc", teksti, lot));   // lÃ¶ytyy alusta
-        System.out.println("abba: " + etsiLoppuosaTaulukosta("abba", teksti, lot)); // lÃ¶ytyy lopusta
-        System.out.println("ccc: " + etsiLoppuosaTaulukosta("ccc", teksti, lot)); // lÃ¶ytyy keskeltÃ¤
-        System.out.println("abca: " + etsiLoppuosaTaulukosta("abca", teksti, lot)); // ei lÃ¶ydy
+        System.out.println("exit: " + etsiLoppuosaTaulukosta("exit", teksti, lot));    // ei lÃ¶ydy
+        System.out.println("code: " + etsiLoppuosaTaulukosta("code", teksti, lot));   // lÃ¶ytyy alusta
+        System.out.println("0: " + etsiLoppuosaTaulukosta("0", teksti, lot)); // lÃ¶ytyy lopusta
+        System.out.println("fin: " + etsiLoppuosaTaulukosta("fin", teksti, lot)); // lÃ¶ytyy keskeltÃ¤
+        System.out.println("with: " + etsiLoppuosaTaulukosta("with", teksti, lot)); // ei lÃ¶ydy
         System.out.println("ddd: " + etsiLoppuosaTaulukosta("ddd", teksti, lot)); // ei lÃ¶ydy
 
     }
@@ -42,10 +42,10 @@ public class TRAII_23_t24_pohja {
         int indeksi;
         while (alku <= loppu) {
             indeksi = alku + (loppu - alku) / 2;
-            if (avain.length() <= teksti.substring(loppuosaTaulukko[indeksi]).length()) { // Tarkistetaan riittääkö tekstin pituus
+            if (avain.length() <= teksti.length()-loppuosaTaulukko[indeksi]) { // Tarkistetaan riittääkö tekstin pituus
                 int alkukohta =  loppuosaTaulukko[indeksi];
                 int loppukohta =  loppuosaTaulukko[indeksi]+ avain.length();
-                int cmp = teksti.substring(alkukohta, loppukohta).compareTo(avain); // Verrataan avainta indeksin kohdan tekstiin
+                int cmp = teksti.substring(alkukohta, loppukohta).compareTo(avain); // Verrataan avainta loppuosataulukon indeksistä löytyvästä tekstin indeksin kohdan tekstiin
                 if (cmp == 0) { // Jos löytyi niin palautetaan indeksi josta löytyi
                     return loppuosaTaulukko[indeksi];
                 }
@@ -55,7 +55,7 @@ public class TRAII_23_t24_pohja {
                     loppu = indeksi -1; // Jos teksti on arvoltaa suurempi kuin avain niin etsitään aiemmasta vaiheesta loppuosataulua
                 }
             } else {
-                if (teksti.substring(loppuosaTaulukko[indeksi]).compareTo(avain) < 0) {
+                if (teksti.substring(loppuosaTaulukko[indeksi]).compareTo(avain) < 0) { // Jos ei tekstin pituus riittänyt niin vertaillaan lopputekstiin
                     alku = indeksi +1;
                 } else {
                     loppu = indeksi -1;
