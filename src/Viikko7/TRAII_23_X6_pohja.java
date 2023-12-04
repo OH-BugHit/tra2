@@ -31,19 +31,7 @@ public class TRAII_23_X6_pohja implements TRAII_23_X6 {
             if (L.isEmpty()) {    // tyhjällä syötteellä tyhjä tulos
                 return tulos;
             }
-
-            if (iteraatiot == 0) {
-                L.sort(Collections.reverseOrder());
-            } else {
-                // Randomit
-                for (int siz = 0; siz < L.size(); siz++) {
-                    int ranIndex = r.nextInt(L.size());
-                    int tmp = L.get(ranIndex);
-                    int ranIndex2 = r.nextInt(L.size());
-                    L.set(ranIndex, L.get(ranIndex2));
-                    L.set(ranIndex2, tmp);
-                }
-            }
+            L.sort(Collections.reverseOrder());
 
             HashMap<Integer, LinkedList<Integer>> vajaus = new HashMap<>(L.size() / laatikonKoko * 2); // Luodaan vähän reilu kuvaus vajauksien ylläpitoja varten
 
