@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class TRAII_23_X6_testi {
 
-  static TRAII_23_X6 testattava = new TRAII_23_X6_pohja();
+  static TRAII_23_X6 testattava = new TRAII_23_X6_hilkolli();
 
   static Random rnd = new Random();
 
